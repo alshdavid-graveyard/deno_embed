@@ -1,0 +1,4 @@
+target
+.bin
+deno_snapshots/cli/snapshots
+deno_snapshots/snapshots
