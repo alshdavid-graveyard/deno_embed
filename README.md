@@ -1,6 +1,6 @@
 # Deno Embed
 
-This repo creates pre-built v8 snapshots from the [main Deno cli package](https://github.com/denoland/deno/blob/main/cli/build.rs).
+This repo distributes pre-built v8 snapshots from the [main Deno cli package](https://github.com/denoland/deno/blob/main/cli/build.rs).
 
 TODO
 
