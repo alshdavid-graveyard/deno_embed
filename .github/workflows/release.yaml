@@ -27,21 +27,11 @@ jobs:
           retention-days: 1
 
   linux-arm64:
-    name: "🐥 Linux ARM64"
+    name: "🐥 Linux ARM64 (skip) ⚠️"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: uraimo/run-on-arch-action@v2
-        with:
-          arch: aarch64
-          distro: fedora_latest
-          run: bash .github/scripts/linux-arm64.bash
-      - uses: actions/upload-artifact@v4
-        with:
-          name: v8-deno-linux-arm64.tar.xz
-          path: deno_snapshots/cli/snapshots/release/v8-deno-linux-arm64.tar.xz
-          if-no-files-found: error
-          retention-days: 1
+      - run: bash .github/scripts/linux-arm64.bash
 
   macos-amd64:
     name: "🍎 MacOS AMD64"

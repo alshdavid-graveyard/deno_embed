@@ -3,6 +3,9 @@ set -ev
 
 export SNAPSHOT_NAME="v8-deno-linux-arm64.bin"
 
+echo skipping because the runner arch
+exit 0
+
 uname -a
 
 sudo dnf update
