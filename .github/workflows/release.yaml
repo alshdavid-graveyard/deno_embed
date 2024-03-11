@@ -91,7 +91,6 @@ jobs:
           gh release edit $BIN_VERSION --title "Deno V8 Snapshots - $DENO_VERSION"
           
           gh release upload $BIN_VERSION linux-amd64.tar.xz/mach-linux-amd64.tar.xz
-          gh release upload $BIN_VERSION linux-arm64.tar.xz/mach-linux-arm64.tar.xz
           gh release upload $BIN_VERSION macos-amd64.tar.xz/mach-macos-amd64.tar.xz
           gh release upload $BIN_VERSION macos-arm64.tar.xz/mach-macos-arm64.tar.xz
           gh release upload $BIN_VERSION windows-amd64.tar.gz/mach-windows-amd64.tar.gz
