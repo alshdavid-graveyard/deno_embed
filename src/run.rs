@@ -1,11 +1,9 @@
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::thread::JoinHandle;
-use std::sync::mpsc::channel;
 
 use tokio::sync::oneshot;
 
-use deno_core::url::Url;
 use deno_core::Extension;
 use deno_core::ModuleCodeString;
 use deno_core::ModuleSpecifier;
@@ -24,6 +22,22 @@ use crate::deno_current_thread;
 pub struct DenoContextOptions {
   pub entry: Option<Entry>,
   pub extensions: Option<fn() -> Vec<Extension>>,
+}
+
+pub struct DenoResponse<T, U> {
+  rx: Option<oneshot::Receiver<Result<T, U>>>,
+}
+
+impl<T, U> DenoResponse<T, U> {
+  pub fn recv(&mut self) -> Option<Result<T, U>> {
+    let Some(rx) = self.rx.take() else {
+      return None;
+    };
+    let Ok(response) = rx.blocking_recv() else {
+      return None;
+    };
+    return Some(response);
+  }
 }
 
 pub struct DenoContext<'a> {
@@ -93,13 +107,15 @@ impl DenoContext<'static> {
 
   pub fn run_file() {}
 
-  pub fn run_code(&self, script_name: &'static str, code: &'static str) -> oneshot::Receiver<Result<(), ()>> {
+  pub fn run_code(&self, script_name: &'static str, code: &'static str) -> DenoResponse<(), ()> {
     let (tx, rx) = oneshot::channel::<Result<(),()>>();
     self.send(DenoRequest::RunCode(tx, script_name, code)).unwrap();
-    return rx;
+    return DenoResponse { 
+      rx: Some(rx) 
+    };
   }
 
-  pub fn wait(&mut self) -> Result<(), ()> {
+  pub fn join(&mut self) -> Result<(), ()> {
     let Some(handle) = self.handle.take() else {
       return Err(());
     };

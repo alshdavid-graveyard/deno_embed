@@ -1,9 +1,20 @@
 # Deno Embed
 
-This repo distributes pre-built v8 snapshots from the [main Deno cli package](https://github.com/denoland/deno/blob/main/cli/build.rs).
+This library is intended to provide a simple "batteries included" experience to embed Deno into a Rust application
 
-The build script is largely unaltered. The dependencies are pinned to a specific release of Deno. You can find the snapshots under the [releases section](https://github.com/alshdavid/deno_embed/releases)
+## Usage
 
-TODO
+```rust
+use deno_embed::DenoContext;
+use deno_embed::DenoContextOptions;
 
-Create a crate that makes it easy to consume Deno functionality from a Rust project, including Deno standard library, Node.js resolutions and the Node.js standard library.
+fn main() {
+  let ctx = DenoContext::new(DenoContextOptions::default());
+
+  // Will print "42" to the console
+  ctx.run_code("cached_module_name.js", "console.log(42)")
+    .recv()
+    .unwrap()
+    .unwrap();
+}
+```
