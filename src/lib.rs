@@ -1,14 +1,11 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod entry;
+mod run;
+mod deno_current_thread;
+mod snapshots;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub use self::deno_current_thread::*;
+pub use self::run::*;
+pub use self::entry::*;
+pub use self::snapshots::*;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub const DENO_VERSION: &str = "1.42.1";
