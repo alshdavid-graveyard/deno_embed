@@ -1,9 +1,15 @@
 [package]
 name = "deno_v8_snapshot_windows_arm64"
-version = "2.0.6-next.0"
+version = "2.0.6-next.1"
 edition = "2021"
 description = "V8 binary files for Deno on Windows" 
 license = "MIT"
+
+include = [
+  "**/*.rs",
+  "src/snapshot.bin",
+  "Cargo.toml",
+]
 
 [build-dependencies]
 walkdir = "2"

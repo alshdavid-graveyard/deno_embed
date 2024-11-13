@@ -1,3 +1,4 @@
+use std::fs;
 use std::path::PathBuf;
 
 use walkdir::WalkDir;
@@ -5,10 +6,11 @@ use walkdir::WalkDir;
 fn main() {
     let profile = std::env::var("PROFILE").unwrap();
     let target = std::env::var("TARGET").unwrap();
-    let out_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+    let crate_path = std::env::var("CARGO_MANIFEST_DIR").unwrap();
 
-    let crate_path = PathBuf::from(&out_dir);
+    let crate_path = PathBuf::from(&crate_path);
     let workspace_path = crate_path.parent().unwrap().parent().unwrap();
+
     let deno_target_path = {
       let target_path = workspace_path.join("deno").join("target");
       if target_path.join(&target).exists() {
@@ -24,6 +26,8 @@ fn main() {
       deno_target_path.join("debug")
     };
 
+    // panic!("{}", deno_output_path.display());
+
     if profile == "debug" && !deno_output_path.exists() {
       // Provide mock file for rust-analyzer
       println!("cargo:rustc-env=SNAPSHOT_PATH={}", crate_path.join("Cargo.toml").to_str().unwrap());
@@ -34,7 +38,8 @@ fn main() {
       let entry = entry.unwrap().path().to_path_buf();
       let entry_str = entry.to_str().unwrap();
       if entry_str.ends_with("CLI_SNAPSHOT.bin") {
-        println!("cargo:rustc-env=SNAPSHOT_PATH={}", entry_str);
+        fs::copy(entry_str, crate_path.join("src").join("snapshot.bin")).unwrap();
+        println!("cargo:rustc-env=SNAPSHOT_PATH=snapshot.bin");
         return
       }
     }    

@@ -2,3 +2,4 @@ target
 deno_snapshots/**/*/*.bin
 deno_snapshots/cli/snapshots
 deno_snapshots/snapshots
+snapshot.bin

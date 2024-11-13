@@ -60,4 +60,4 @@ else \
   
 build:
   cd deno && cargo build --release {{ target_cargo }}
-  cargo build {{ profile_cargo }} {{ target_cargo }}
+  cargo build --release {{ target_cargo }}

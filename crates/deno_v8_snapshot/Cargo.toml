@@ -1,24 +1,24 @@
 [package]
 name = "deno_v8_snapshot"
-version = "2.0.6-next.0"
+version = "2.0.6-next.1"
 edition = "2021"
 description = "A crate to make embedding Deno a little eaiser" 
 license = "MIT"
 
 [target.'cfg(all(target_os = "macos", target_arch = "aarch64"))'.dependencies]
-deno_v8_snapshot_macos_arm64 = { path = "../deno_v8_snapshot_macos_arm64", version = "2.0.6-next.0" }
+deno_v8_snapshot_macos_arm64 = { path = "../deno_v8_snapshot_macos_arm64", version = "2.0.6-next.1" }
 
 [target.'cfg(all(target_os = "macos", target_arch = "x86_64"))'.dependencies]
-deno_v8_snapshot_macos_amd64 = { path = "../deno_v8_snapshot_macos_amd64", version = "2.0.6-next.0" }
+deno_v8_snapshot_macos_amd64 = { path = "../deno_v8_snapshot_macos_amd64", version = "2.0.6-next.1" }
 
 [target.'cfg(all(target_os = "linux", target_arch = "aarch64"))'.dependencies]
-deno_v8_snapshot_linux_arm64 = { path = "../deno_v8_snapshot_linux_arm64", version = "2.0.6-next.0" }
+deno_v8_snapshot_linux_arm64 = { path = "../deno_v8_snapshot_linux_arm64", version = "2.0.6-next.1" }
 
 [target.'cfg(all(target_os = "linux", target_arch = "x86_64"))'.dependencies]
-deno_v8_snapshot_linux_amd64 = { path = "../deno_v8_snapshot_linux_amd64", version = "2.0.6-next.0" }
+deno_v8_snapshot_linux_amd64 = { path = "../deno_v8_snapshot_linux_amd64", version = "2.0.6-next.1" }
 
 [target.'cfg(all(target_os = "windows", target_arch = "aarch64"))'.dependencies]
-deno_v8_snapshot_windows_arm64 = { path = "../deno_v8_snapshot_windows_arm64", version = "2.0.6-next.0" }
+deno_v8_snapshot_windows_arm64 = { path = "../deno_v8_snapshot_windows_arm64", version = "2.0.6-next.1" }
 
 [target.'cfg(all(target_os = "windows", target_arch = "x86_64"))'.dependencies]
-deno_v8_snapshot_windows_amd64 = { path = "../deno_v8_snapshot_windows_amd64", version = "2.0.6-next.0" }
+deno_v8_snapshot_windows_amd64 = { path = "../deno_v8_snapshot_windows_amd64", version = "2.0.6-next.1" }
