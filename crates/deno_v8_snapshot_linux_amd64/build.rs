@@ -7,11 +7,16 @@ fn main() {
     let target = std::env::var("TARGET").unwrap();
     let out_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
 
-    panic!("{}", target);
-
     let crate_path = PathBuf::from(&out_dir);
     let workspace_path = crate_path.parent().unwrap().parent().unwrap();
-    let deno_target_path = workspace_path.join("deno").join("target");
+    let deno_target_path = {
+      let target_path = workspace_path.join("deno").join("target");
+      if target_path.join("release").exists() {
+        target_path
+      } else {
+        target_path.join(target)
+      }
+    };
     
     let deno_output_path = if profile == "release" {
       deno_target_path.join("release")
