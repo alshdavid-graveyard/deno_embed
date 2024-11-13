@@ -22,8 +22,8 @@ jobs:
           brew install llvm lld cmake protobuf make gcc
           export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-          source .github/scripts/utils/install-rust.bash
-          source .github/scripts/utils/install-protobuf.bash \
+          source .github/utils/install-rust.bash
+          source .github/utils/install-protobuf.bash \
             https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-osx-x86_64.zip
 
           rustup target add x86_64-apple-darwin
@@ -47,8 +47,8 @@ jobs:
           brew install llvm lld cmake protobuf make gcc
           export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
-          source .github/scripts/utils/install-rust.bash
-          source .github/scripts/utils/install-protobuf.bash \
+          source .github/utils/install-rust.bash
+          source .github/utils/install-protobuf.bash \
             https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-osx-aarch_64.zip
 
           rustup target add aarch64-apple-darwin
@@ -78,10 +78,15 @@ jobs:
         with: { submodules: true }
       - run: |
           set -e
-          sudo apt-get update
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          ./llvm.sh 17
 
-          source .github/scripts/utils/install-rust.bash
-          source .github/scripts/utils/install-protobuf.bash \
+          sudo apt-get update -y
+          sudo apt-get install -y --install-recommends -y cmake libglib2.0-dev
+          
+          source .github/utils/install-rust.bash
+          source .github/utils/install-protobuf.bash \
             https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
         
           rustup target add x86_64-unknown-linux-gnu

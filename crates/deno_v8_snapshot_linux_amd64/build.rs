@@ -4,7 +4,10 @@ use walkdir::WalkDir;
 
 fn main() {
     let profile = std::env::var("PROFILE").unwrap();
+    let target = std::env::var("TARGET").unwrap();
     let out_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
+
+    panic!("{}", target);
 
     let crate_path = PathBuf::from(&out_dir);
     let workspace_path = crate_path.parent().unwrap().parent().unwrap();
