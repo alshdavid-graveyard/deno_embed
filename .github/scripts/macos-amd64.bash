@@ -10,9 +10,6 @@ brew install llvm cmake protobuf make gcc
 clang -v
 
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 which lld
 clang -v

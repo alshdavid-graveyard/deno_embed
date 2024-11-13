@@ -6,11 +6,43 @@ version = 3
 name = "deno_v8_snapshot"
 version = "2.0.6-next.0"
 dependencies = [
+ "deno_v8_snapshot_linux_amd64",
+ "deno_v8_snapshot_linux_arm64",
+ "deno_v8_snapshot_macos_amd64",
  "deno_v8_snapshot_macos_arm64",
+ "deno_v8_snapshot_windows_amd64",
+]
+
+[[package]]
+name = "deno_v8_snapshot_linux_amd64"
+version = "2.0.6-next.0"
+dependencies = [
+ "walkdir",
+]
+
+[[package]]
+name = "deno_v8_snapshot_linux_arm64"
+version = "2.0.6-next.0"
+dependencies = [
+ "walkdir",
+]
+
+[[package]]
+name = "deno_v8_snapshot_macos_amd64"
+version = "2.0.6-next.0"
+dependencies = [
+ "walkdir",
 ]
 
 [[package]]
 name = "deno_v8_snapshot_macos_arm64"
+version = "2.0.6-next.0"
+dependencies = [
+ "walkdir",
+]
+
+[[package]]
+name = "deno_v8_snapshot_windows_amd64"
 version = "2.0.6-next.0"
 dependencies = [
  "walkdir",

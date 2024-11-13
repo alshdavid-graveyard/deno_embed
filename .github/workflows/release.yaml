@@ -10,13 +10,37 @@ on:
       - "main"
 
 jobs:
+  macos-amd64:
+    name: "🍎 deno_v8_snapshot_macos_amd64"
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: true }
+      - run: |
+          set -e
+
+          brew install llvm lld cmake protobuf make gcc
+          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+
+          source .github/scripts/utils/install-rust.bash
+          source .github/scripts/utils/install-protobuf.bash \
+            https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-osx-x86_64.zip
+
+          rustup target add x86_64-apple-darwin
+
+          cd deno && cargo build --release --target x86_64-apple-darwin
+      - run: |
+          cargo build --release --target x86_64-apple-darwin
+          cargo publish --package deno_v8_snapshot_macos_arm64 --token $CRATES_IO_API_TOKEN --target x86_64-apple-darwin
+        env:
+          CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
+
   macos-arm64:
     name: "🍎 deno_v8_snapshot_macos_arm64"
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-        with: 
-          submodules: true
+        with: { submodules: true }
       - run: |
           set -e
 
@@ -31,8 +55,69 @@ jobs:
 
           cd deno && cargo build --release --target aarch64-apple-darwin
       - run: |
-          cargo build --release
-          cargo publish --package deno_v8_snapshot_macos_arm64 --token $CRATES_IO_API_TOKEN
+          cargo build --release --target aarch64-apple-darwin
+          cargo publish --package deno_v8_snapshot_macos_arm64 --token $CRATES_IO_API_TOKEN --target aarch64-apple-darwin
+        env:
+          CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
+
+  linux-arm64:
+    name: "🐥 deno_v8_snapshot_linux_arm64"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: true }
+      - run: |
+          set -e
+          echo Linux ARM not yet supported
+          exit 0
+
+  linux-amd64:
+    name: "🐥 deno_v8_snapshot_linux_amd64"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: true }
+      - run: |
+          set -e
+          sudo apt-get update
+
+          source .github/scripts/utils/install-rust.bash
+          source .github/scripts/utils/install-protobuf.bash \
+            https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+        
+          rustup target add x86_64-unknown-linux-gnu
+
+          cd deno && cargo build --release --target x86_64-unknown-linux-gnu
+      - run: |
+          cargo build --release --target x86_64-unknown-linux-gnu
+          cargo publish --package deno_v8_snapshot_linux_amd64 --token $CRATES_IO_API_TOKEN --target x86_64-unknown-linux-gnu
+        env:
+          CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
+
+  windows-amd64:
+    name: "🐥 deno_v8_snapshot_windows_amd64"
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: true }
+      - shell: pwsh
+        run: |
+          echo "Installing Protobuf"
+          $PROTOC_URL = "https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-win64.zip"
+          $PROTOC_DIR = "$HOME\local\protoc"
+          New-Item -Path "$PROTOC_DIR" -ItemType Directory  -Force
+          curl -L -o "$PROTOC_DIR\protoc.zip" $PROTOC_URL
+          unzip "$PROTOC_DIR\protoc.zip" -d $PROTOC_DIR
+          $env:Path += ";$PROTOC_DIR\bin"
+          protoc --version
+
+          rustup target add x86_64-pc-windows-msvc
+        
+          cd deno && cargo build --release --target x86_64-pc-windows-msvc
+      - shell: pwsh
+        run: |
+          cargo build --release --target x86_64-pc-windows-msvc
+          cargo publish --package deno_v8_snapshot_windows_amd64 --token $CRATES_IO_API_TOKEN --target x86_64-pc-windows-msvc
         env:
           CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
 

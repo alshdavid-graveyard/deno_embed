@@ -1,0 +1,9 @@
+[package]
+name = "deno_v8_snapshot_windows_amd64"
+version = "2.0.6-next.0"
+edition = "2021"
+description = "V8 binary files for Deno on Windows" 
+license = "MIT"
+
+[build-dependencies]
+walkdir = "2"

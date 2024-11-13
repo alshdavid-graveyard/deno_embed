@@ -3,7 +3,11 @@ resolver = "2"
 
 members = [
   "./crates/deno_v8_snapshot",
-  "./crates/deno_v8_snapshot_macos_arm64"
+  "./crates/deno_v8_snapshot_macos_arm64",
+  "./crates/deno_v8_snapshot_macos_amd64",
+  "./crates/deno_v8_snapshot_linux_arm64",
+  "./crates/deno_v8_snapshot_linux_amd64",
+  "./crates/deno_v8_snapshot_windows_amd64",
 ]
 
 [workspace.package]
