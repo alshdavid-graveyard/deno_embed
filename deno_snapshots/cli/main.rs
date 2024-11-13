@@ -1,3 +1,0 @@
-mod napi;
-
-fn main() {}

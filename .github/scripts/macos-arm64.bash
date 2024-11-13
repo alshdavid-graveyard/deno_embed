@@ -10,8 +10,6 @@ brew install llvm cmake protobuf make gcc
 clang -v
 
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-# export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 
 which lld
 clang -v
@@ -22,9 +20,8 @@ source .github/scripts/utils/install-protobuf.bash \
 
 rustup target add aarch64-apple-darwin
 
-cd deno_snapshots
-cargo clean
+cd deno
 cargo build --release --target aarch64-apple-darwin
 
-cd cli/snapshots/release
-XZ_OPT=-9 tar -Jcvf v8-deno-macos-arm64.tar.xz v8-deno-macos-arm64.bin
+cd ../
+cargo build --release

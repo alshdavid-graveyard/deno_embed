@@ -1,98 +1,45 @@
 name: Release
 
-on: 
-  workflow_dispatch:
-    inputs:
-      deno-version:
-        description: 'Version of Deno'
-        required: true
-        type: string
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  DENO_VERSION: ${{ inputs.deno-version }}
+on: 
+  push:
+    branches:
+      - "main"
 
 jobs:
-  linux-amd64:
-    name: "🐥 Linux AMD64"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash .github/scripts/linux-amd64.bash
-      - uses: actions/upload-artifact@v4
-        with:
-          name: v8-deno-linux-amd64.tar.xz
-          path: deno_snapshots/cli/snapshots/release/v8-deno-linux-amd64.tar.xz
-          if-no-files-found: error
-          retention-days: 1
-
-  linux-arm64:
-    name: "🐥 Linux ARM64 (skip) ⚠️"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash .github/scripts/linux-arm64.bash
-
-  macos-amd64:
-    name: "🍎 MacOS AMD64"
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@v4
-      - run: bash .github/scripts/macos-amd64.bash
-      - uses: actions/upload-artifact@v4
-        with:
-          name: v8-deno-macos-amd64.tar.xz
-          path: deno_snapshots/cli/snapshots/release/v8-deno-macos-amd64.tar.xz
-          if-no-files-found: error
-          retention-days: 1
-
   macos-arm64:
     name: "🍎 MacOS ARM64"
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-      - run: bash .github/scripts/macos-arm64.bash
-      - uses: actions/upload-artifact@v4
-        with:
-          name: v8-deno-macos-arm64.tar.xz
-          path: deno_snapshots/cli/snapshots/release/v8-deno-macos-arm64.tar.xz
-          if-no-files-found: error
-          retention-days: 1
-
-  windows-amd64:
-    name: "🟦 Windows AMD64"
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: .\.github\scripts\windows-amd64.ps1
-      - uses: actions/upload-artifact@v4
-        with:
-          name: v8-deno-windows-amd64.tar.xz
-          path: deno_snapshots/cli/snapshots/release/v8-deno-windows-amd64.tar.xz
-          if-no-files-found: error
-          retention-days: 1
-
-  windows-arm64:
-    name: "🟦 Windows ARM64 (skip) ⚠️"
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: .\.github\scripts\windows-arm64.ps1
-
-  publish-github-release:
-    name: "🔄 Publish Github Release"
-    runs-on: ubuntu-latest
-    needs: [linux-amd64, linux-arm64, macos-amd64, macos-arm64, windows-amd64, windows-arm64]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
       - run: |
-          gh release create $DENO_VERSION --draft --notes "Automatically built binaries"
-          gh release edit $BIN_VERSION --title "Deno V8 Snapshots - $DENO_VERSION"
-          
-          gh release upload $BIN_VERSION linux-amd64.tar.xz/mach-linux-amd64.tar.xz
-          gh release upload $BIN_VERSION macos-amd64.tar.xz/mach-macos-amd64.tar.xz
-          gh release upload $BIN_VERSION macos-arm64.tar.xz/mach-macos-arm64.tar.xz
-          gh release upload $BIN_VERSION windows-amd64.tar.gz/mach-windows-amd64.tar.gz
-          
-          gh release edit $BIN_VERSION --draft=false
+          set -e
+
+          brew install llvm cmake protobuf make gcc
+
+          source .github/scripts/utils/install-rust.bash
+          source .github/scripts/utils/install-protobuf.bash \
+            https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-osx-aarch_64.zip
+
+          rustup target add aarch64-apple-darwin
+
+          cd deno
+          cargo build --release --target aarch64-apple-darwin
+      - run: |
+          cargo publish --package deno_embed_macos_arm64 --token $CRATES_IO_API_TOKEN
+        env:
+          CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
+
+  publish-deno-embed:
+    name: "🔄 Publish deno_embed"
+    runs-on: ubuntu-latest
+    needs: [macos-arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
+        run: |
+          cargo publish --package deno_embed --token $CRATES_IO_API_TOKEN
