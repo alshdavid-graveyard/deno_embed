@@ -68,7 +68,7 @@ jobs:
         with: { submodules: true }
       - run: |
           set -e
-          echo Linux ARM not yet supported
+          echo Linux ARM not yet supported because I don't know how to cross compile Deno
           exit 0
 
   linux-amd64:
@@ -95,7 +95,7 @@ jobs:
           CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
 
   windows-amd64:
-    name: "🐥 deno_v8_snapshot_windows_amd64"
+    name: "🟦 deno_v8_snapshot_windows_amd64"
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -121,10 +121,18 @@ jobs:
         env:
           CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
 
+  windows-arm64:
+    name: "🟦 deno_v8_snapshot_windows_arm64"
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        run: |
+          echo "Deno does not compile on ARM Windows"
+
   publish-deno-v8-snapshot:
     name: "🔄 deno_v8_snapshot"
     runs-on: ubuntu-latest
-    needs: [macos-arm64]
+    needs: [macos-arm64, macos-amd64, linux-arm64, linux-amd64, windows-amd64, windows-arm64]
     steps:
       - uses: actions/checkout@v4
       - env:
