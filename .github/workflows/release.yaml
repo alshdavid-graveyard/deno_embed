@@ -11,7 +11,7 @@ on:
 
 jobs:
   macos-arm64:
-    name: "🍎 deno_embed_macos_arm64"
+    name: "🍎 deno_v8_snapshot_macos_arm64"
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +21,7 @@ jobs:
           set -e
 
           brew install llvm cmake protobuf make gcc
+          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
           source .github/scripts/utils/install-rust.bash
           source .github/scripts/utils/install-protobuf.bash \
@@ -31,12 +32,12 @@ jobs:
           cd deno && cargo build --release --target aarch64-apple-darwin
       - run: |
           cargo build --release
-          cargo publish --package deno_embed_macos_arm64 --token $CRATES_IO_API_TOKEN
+          cargo publish --package deno_v8_snapshot_macos_arm64 --token $CRATES_IO_API_TOKEN
         env:
           CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
 
-  publish-deno-embed:
-    name: "🔄 deno_embed"
+  publish-deno-v8-snapshot:
+    name: "🔄 deno_v8_snapshot"
     runs-on: ubuntu-latest
     needs: [macos-arm64]
     steps:
@@ -44,4 +45,4 @@ jobs:
       - env:
           CRATES_IO_API_TOKEN: ${{ secrets.CRATES_IO_API_TOKEN }}
         run: |
-          cargo publish --package deno_embed --token $CRATES_IO_API_TOKEN
+          cargo publish --package deno_v8_snapshot --token $CRATES_IO_API_TOKEN

@@ -3,14 +3,14 @@
 version = 3
 
 [[package]]
-name = "deno_embed"
+name = "deno_v8_snapshot"
 version = "2.0.6-next.0"
 dependencies = [
- "deno_embed_macos_arm64",
+ "deno_v8_snapshot_macos_arm64",
 ]
 
 [[package]]
-name = "deno_embed_macos_arm64"
+name = "deno_v8_snapshot_macos_arm64"
 version = "2.0.6-next.0"
 dependencies = [
  "walkdir",

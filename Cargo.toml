@@ -2,8 +2,8 @@
 resolver = "2"
 
 members = [
-  "./crates/deno_embed",
-  "./crates/deno_embed_macos_arm64"
+  "./crates/deno_v8_snapshot",
+  "./crates/deno_v8_snapshot_macos_arm64"
 ]
 
 [workspace.package]
