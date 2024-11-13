@@ -20,7 +20,7 @@ jobs:
       - run: |
           set -e
 
-          brew install llvm cmake protobuf make gcc
+          brew install llvm lld cmake protobuf make gcc
           export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 
           source .github/scripts/utils/install-rust.bash
