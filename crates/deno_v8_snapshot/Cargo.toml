@@ -17,5 +17,8 @@ deno_v8_snapshot_linux_arm64 = { path = "../deno_v8_snapshot_linux_arm64", versi
 [target.'cfg(all(target_os = "linux", target_arch = "x86_64"))'.dependencies]
 deno_v8_snapshot_linux_amd64 = { path = "../deno_v8_snapshot_linux_amd64", version = "2.0.6-next.0" }
 
+[target.'cfg(all(target_os = "windows", target_arch = "aarch64"))'.dependencies]
+deno_v8_snapshot_windows_arm64 = { path = "../deno_v8_snapshot_windows_arm64", version = "2.0.6-next.0" }
+
 [target.'cfg(all(target_os = "windows", target_arch = "x86_64"))'.dependencies]
 deno_v8_snapshot_windows_amd64 = { path = "../deno_v8_snapshot_windows_amd64", version = "2.0.6-next.0" }

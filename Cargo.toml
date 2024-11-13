@@ -8,6 +8,7 @@ members = [
   "./crates/deno_v8_snapshot_linux_arm64",
   "./crates/deno_v8_snapshot_linux_amd64",
   "./crates/deno_v8_snapshot_windows_amd64",
+  "./crates/deno_v8_snapshot_windows_arm64",
 ]
 
 [workspace.package]
