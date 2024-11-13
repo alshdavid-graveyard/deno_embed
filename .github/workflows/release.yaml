@@ -68,8 +68,7 @@ jobs:
         with: { submodules: true }
       - run: |
           set -e
-          echo Linux ARM not yet supported because I don't know how to cross compile Deno
-          exit 0
+          echo Linux ARM not yet supported because I dont know how to cross compile Deno
 
   linux-amd64:
     name: "🐥 deno_v8_snapshot_linux_amd64"
