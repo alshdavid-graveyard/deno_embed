@@ -11,10 +11,10 @@ fn main() {
     let workspace_path = crate_path.parent().unwrap().parent().unwrap();
     let deno_target_path = {
       let target_path = workspace_path.join("deno").join("target");
-      if target_path.join("release").exists() {
-        target_path
-      } else {
+      if target_path.join(&target).exists() {
         target_path.join(target)
+      } else {
+        target_path
       }
     };
     

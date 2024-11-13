@@ -4,11 +4,19 @@ use walkdir::WalkDir;
 
 fn main() {
     let profile = std::env::var("PROFILE").unwrap();
+    let target = std::env::var("TARGET").unwrap();
     let out_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
 
     let crate_path = PathBuf::from(&out_dir);
     let workspace_path = crate_path.parent().unwrap().parent().unwrap();
-    let deno_target_path = workspace_path.join("deno").join("target");
+    let deno_target_path = {
+      let target_path = workspace_path.join("deno").join("target");
+      if target_path.join(&target).exists() {
+        target_path.join(target)
+      } else {
+        target_path
+      }
+    };
     
     let deno_output_path = if profile == "release" {
       deno_target_path.join("release")
