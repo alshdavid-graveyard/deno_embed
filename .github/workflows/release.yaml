@@ -80,11 +80,11 @@ jobs:
           set -e
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          ./llvm.sh 17
+          sudo ./llvm.sh 17
 
           sudo apt-get update -y
           sudo apt-get install -y --install-recommends -y cmake libglib2.0-dev
-          
+
           source .github/utils/install-rust.bash
           source .github/utils/install-protobuf.bash \
             https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
