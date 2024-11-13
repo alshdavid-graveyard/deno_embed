@@ -12,7 +12,7 @@ on:
 jobs:
   macos-amd64:
     name: "🍎 deno_v8_snapshot_macos_amd64"
-    runs-on: macos-14
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
         with: { submodules: true }
@@ -37,7 +37,7 @@ jobs:
 
   macos-arm64:
     name: "🍎 deno_v8_snapshot_macos_arm64"
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
         with: { submodules: true }
