@@ -16,7 +16,7 @@ fn main() {
       deno_target_path.join("debug")
     };
 
-    if !deno_output_path.exists() {
+    if profile == "debug" && !deno_output_path.exists() {
       // Provide mock file for rust-analyzer
       println!("cargo:rustc-env=SNAPSHOT_PATH={}", crate_path.join("Cargo.toml").to_str().unwrap());
       return
@@ -30,4 +30,6 @@ fn main() {
         break
       }
     }    
+
+    panic!("Unable to find SNAPSHOT.bin in Deno")
 }
